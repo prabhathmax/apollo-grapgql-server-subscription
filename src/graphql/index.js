@@ -4,6 +4,7 @@ import account from './account';
 import AuthenticatedDirective from './directives/authenticated';
 import createHasRoleDirective from './directives/has-role';
 import createHasPermissionDirective from './directives/has-permission';
+import post from './post';
 
 const defaultTypeDefs = gql`
   directive @authenticated on OBJECT | FIELD_DEFINITION
@@ -16,12 +17,16 @@ const defaultTypeDefs = gql`
   type Mutation {
     _empty: String
   }
+
+  type Subscription {
+    _empty: String
+  }
 `;
 
 const createSchema = (context) =>
   makeExecutableSchema({
-    typeDefs: [defaultTypeDefs, account.typeDefs],
-    resolvers: merge({}, account.resolvers),
+    typeDefs: [defaultTypeDefs, account.typeDefs, post.typeDefs],
+    resolvers: merge({}, account.resolvers, post.resolvers),
     schemaDirectives: {
       authenticated: AuthenticatedDirective,
       hasRole: createHasRoleDirective(context.services.role),

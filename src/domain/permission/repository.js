@@ -1,21 +1,14 @@
 class PermissionRepository {
   constructor(knex) {
     this.database = knex;
-    this.columns = [
-      'id',
-      'name',
-      'displayName',
-      'description',
-      'created_at as createdAt',
-      'updated_at as updatedAt',
-    ];
+    this.columns = ['id', 'name', 'displayName', 'description', 'createdAt', 'updatedAt'];
   }
 
   async findForRole(roleId) {
-    return this.database('permission_role')
+    return this.database('permissionRole')
       .select(this.columns)
-      .where({ role_id: roleId })
-      .leftOuterJoin('permissions', 'permission_role.permission_id', 'permissions.id');
+      .where({ roleId })
+      .leftOuterJoin('permissions', 'permissionRole.permissionId', 'permissions.id');
   }
 }
 
