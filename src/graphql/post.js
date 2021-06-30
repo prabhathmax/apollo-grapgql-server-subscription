@@ -8,8 +8,12 @@ const typeDefs = gql`
     author: String
     comment: String
   }
+  input AddPost {
+    author: String
+    comment: String
+  }
   extend type Mutation {
-    addPost(author: String, comment: String): Post
+    addPost(info: AddPost!): Post
   }
   extend type Subscription {
     postAdded: Post
@@ -21,8 +25,8 @@ const resolvers = {
     addPost(_, { info }) {
       pubsub.publish(POST_ADDED, { postAdded: info });
       return {
-        author: 'auther added',
-        comment: 'comment added',
+        author: info.author,
+        comment: info.comment,
       };
     },
   },
